@@ -32,7 +32,13 @@ class Interpriter(NodeVisitor):
         except ValueError:
             pass
 
-        self.global_scope[node.value] = value
+        self.global_scope[node.var.value] = value
+
+    def visit_Output(self, node):
+        print(self.visit(node.expr))
+
+    def visit_Goto(self, node):
+        return self.visit(node.expr)
 
 
     def visit_BinOp(self, node):
@@ -50,10 +56,6 @@ class Interpriter(NodeVisitor):
         elif node.op == '^':
             return self.visit(node.left) ** self.visit(node.right)
 
-    def visit_Num(self, node):
-        """Return a numbers value."""
-        return node.value
-
     def visit_UnaryOp(self, node):
         """Visit and evaluate a UnaryOp."""
         op = node.op
@@ -61,6 +63,22 @@ class Interpriter(NodeVisitor):
             return self.visit(node.expr)
         else:
             return -self.visit(node.expr)
+
+
+    def visit_Num(self, node):
+        """Return a numbers value."""
+        return node.value
+
+    def visit_Var(self, node):
+        var_name = node.value
+        val = self.global_scope.get(var_name)
+        if val is None:
+            raise NameError(repr(var_name))
+        else:
+            return val
+
+    def visit_String(self, node):
+        return node.value
 
     def visit_NoOp(self, node):
         pass

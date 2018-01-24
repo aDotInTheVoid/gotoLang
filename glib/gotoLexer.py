@@ -12,10 +12,6 @@ tokens = [
 
              # Operators (+,-,*,/,%,^)
              'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'MODULO', 'POW',
-             # (|,&,~)
-             'OR', 'AND', 'NOT',
-             # (<, <=, >, >=, ==, !=)
-             'LT', 'LE', 'GT', 'GE', 'EQ', 'NE',
 
              # Assignment (=)
              'EQUALS',
@@ -41,10 +37,6 @@ t_TIMES = r'\*'
 t_DIVIDE = r'/'
 t_MODULO = r'%'
 t_POW = r'\^'
-
-t_OR = r'\|'
-t_AND = r'&'
-t_NOT = r'!'
 
 t_EQUALS = r'='
 

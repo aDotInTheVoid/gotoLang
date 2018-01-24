@@ -26,7 +26,8 @@ def p_program(p):
 def p_statement(p):
     """statement : io_statement
                  | goto_statement
-                 | assignment_statement"""
+                 | assignment_statement
+                 | none"""
     p[0] = p[1]
 
 
@@ -49,11 +50,11 @@ def p_output_statement(p):
 
 def p_goto_statement(p):
     """goto_statement : GOTO expr """
-    p[0] = gotoASTs.KeywordStatement(p[1], p[2])
+    p[0] = gotoASTs.Goto(p[2])
 
 
 def p_assignment_statement(p):
-    """assignment_statement : ID EQUALS expr"""
+    """assignment_statement : var EQUALS expr"""
     p[0] = gotoASTs.Assign(p[1], p[2], p[3])
 
 
@@ -128,6 +129,9 @@ def p_str(p):
     """str : STRING"""
     p[0] = gotoASTs.String(p[1])
 
+def p_none(p):
+    """none :"""
+    p[0] = gotoASTs.NoOp()
 
 def p_error(p):
     if p:
