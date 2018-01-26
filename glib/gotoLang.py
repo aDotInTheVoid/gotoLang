@@ -1,36 +1,24 @@
 import gotoParser
 import gotoLexer
-from files import gotoInterpriter
-
-programm = """INPUT a;
-INPUT b;
-GOTO ((a-b)/((a-b)^2)^0.5)+4;
-OUTPUT b;
-GOTO 6;
-OUTPUT a;
-"""
-"""OUPUT "HOW MANY NUMBERS";
-INPUT numOfNums;
-OUTPUT "ENTER THE NUMBERS"
-INPUT Largest;
-INPUT Another;
-LargestGreater = (((Largest-Another)/((Largest-Another)^2)^0.5)+1)/2;
-OUTPUT LargestGreater;
-
-"""
-parsedProgram = gotoParser.parser().parse(programm, lexer=gotoLexer.lexer)
-if not isinstance(parsedProgram, list):
-    parsedProgram = [parsedProgram]
-
-interpriter = gotoInterpriter.Interpriter()
-lineNum = 0
-
-while 0 <= lineNum < len(parsedProgram):
-    nextLineNum = interpriter.visit(parsedProgram[int(lineNum)])
-    if nextLineNum is not None:
-        lineNum = nextLineNum
-
-    else:
-        lineNum += 1
+import gotoInterpriter
 
 
+def run(program):
+    parsed_program = gotoParser.parser().parse(program, lexer=gotoLexer.lexer)
+    if not isinstance(parsed_program, list):
+        parsed_program = [parsed_program]
+
+    interpriter = gotoInterpriter.Interpriter()
+    line_num = 0
+
+    while 0 <= line_num < len(parsed_program):
+        next_line_num = interpriter.visit(parsed_program[int(line_num)])
+
+        if next_line_num is not None:
+            line_num = next_line_num
+
+        else:
+            line_num += 1
+
+if __name__ == "__main__":
+    run(open("../examples/Highest.goto", "r").read());

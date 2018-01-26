@@ -3,7 +3,7 @@ class NodeVisitor(object):
 
     def visit(self, node):
         """Input node, call visit function for that paticlar node type."""
-        method_name = 'visit_' + type(node).__name__
+        method_name = 'visit_' + type(node).__name__.lower()
         visitor = getattr(self, method_name, self.generic_visit)
         return visitor(node)
 
@@ -20,11 +20,11 @@ class Interpriter(NodeVisitor):
         """Save the variables."""
         self.global_scope = dict()
 
-    def visit_Assign(self, node):
+    def visit_assign(self, node):
         var_name = node.left.value
         self.global_scope[var_name] = self.visit(node.right)
 
-    def visit_Input(self, node):
+    def visit_input(self, node):
         value = input()
 
         try:
@@ -34,29 +34,33 @@ class Interpriter(NodeVisitor):
 
         self.global_scope[node.var.value] = value
 
-    def visit_Output(self, node):
+    def visit_output(self, node):
         print(self.visit(node.expr))
 
-    def visit_Goto(self, node):
+    def visit_goto(self, node):
         return self.visit(node.expr)
 
 
-    def visit_BinOp(self, node):
+    def visit_binop(self, node):
         """Visit and evaluate a BinOP Node."""
-        if node.op == '+':
-            return self.visit(node.left) + self.visit(node.right)
-        elif node.op == '-':
-            return self.visit(node.left) - self.visit(node.right)
-        elif node.op == '*':
-            return self.visit(node.left) * self.visit(node.right)
-        elif node.op == '/':
-            return self.visit(node.left) / self.visit(node.right)
-        elif node.op == '%':
-            return self.visit(node.left) % self.visit(node.right)
-        elif node.op == '^':
-            return self.visit(node.left) ** self.visit(node.right)
+        try:
+            if node.op == '+':
+                return self.visit(node.left) + self.visit(node.right)
+            elif node.op == '-':
+                return self.visit(node.left) - self.visit(node.right)
+            elif node.op == '*':
+                return self.visit(node.left) * self.visit(node.right)
+            elif node.op == '/':
+                return self.visit(node.left) / self.visit(node.right)
+            elif node.op == '%':
+                return self.visit(node.left) % self.visit(node.right)
+            elif node.op == '^':
+                return self.visit(node.left) ** self.visit(node.right)
+        except (ZeroDivisionError, TypeError) as e:
+            print("Error: unsupported operand type(s) for -: 'int' and 'str'")
+            exit()
 
-    def visit_UnaryOp(self, node):
+    def visit_unaryop(self, node):
         """Visit and evaluate a UnaryOp."""
         op = node.op
         if op == "+":
@@ -65,11 +69,11 @@ class Interpriter(NodeVisitor):
             return -self.visit(node.expr)
 
 
-    def visit_Num(self, node):
+    def visit_num(self, node):
         """Return a numbers value."""
         return node.value
 
-    def visit_Var(self, node):
+    def visit_var(self, node):
         var_name = node.value
         val = self.global_scope.get(var_name)
         if val is None:
@@ -77,13 +81,13 @@ class Interpriter(NodeVisitor):
         else:
             return val
 
-    def visit_String(self, node):
+    def visit_string(self, node):
         return node.value
 
-    def visit_NoOp(self, node):
+    def visit_noop(self, node):
         pass
 
-    def visit_Var(self, node):
+    def visit_var(self, node):
         var_name = node.value
         val = self.global_scope.get(var_name)
         if val is None:
