@@ -57,7 +57,7 @@ class Interpriter(NodeVisitor):
             elif node.op == '^':
                 return self.visit(node.left) ** self.visit(node.right)
         except (ZeroDivisionError, TypeError) as e:
-            print("Error: unsupported operand type(s) for -: 'int' and 'str'")
+            print("Error on line {}: {}".format(self.line_num ,e))
             exit()
 
     def visit_unaryop(self, node):

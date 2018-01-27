@@ -20,6 +20,7 @@ def run(program):
     line_num = 0
 
     while 0 <= line_num < len(parsed_program):
+        interpriter.line_num = line_num
         next_line_num = interpriter.visit(parsed_program[int(line_num)])
 
         if next_line_num is not None:
