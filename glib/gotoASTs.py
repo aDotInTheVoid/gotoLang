@@ -11,7 +11,7 @@ class Programm(AST):
 
 # Statements
 class Assign(AST):
-    "represents ID ASSIGN expr"
+    """represents ID ASSIGN expr"""
 
     def __init__(self, left, op, right):
         self.left = left

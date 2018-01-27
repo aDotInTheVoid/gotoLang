@@ -12,7 +12,6 @@ class NodeVisitor(object):
         raise Exception('No visit_{} method'.format(type(node.__name__)))
 
 
-
 class Interpriter(NodeVisitor):
     """Inputs AST, returns integer that that ast evaluates to."""
 
@@ -40,7 +39,6 @@ class Interpriter(NodeVisitor):
     def visit_goto(self, node):
         return self.visit(node.expr)
 
-
     def visit_binop(self, node):
         """Visit and evaluate a BinOP Node."""
         try:
@@ -57,7 +55,7 @@ class Interpriter(NodeVisitor):
             elif node.op == '^':
                 return self.visit(node.left) ** self.visit(node.right)
         except (ZeroDivisionError, TypeError) as e:
-            print("Error on line {}: {}".format(self.line_num ,e))
+            print("Error on line {}: {}".format(self.line_num, e))
             exit()
 
     def visit_unaryop(self, node):
@@ -67,7 +65,6 @@ class Interpriter(NodeVisitor):
             return self.visit(node.expr)
         else:
             return -self.visit(node.expr)
-
 
     def visit_num(self, node):
         """Return a numbers value."""
@@ -86,11 +83,3 @@ class Interpriter(NodeVisitor):
 
     def visit_noop(self, node):
         pass
-
-    def visit_var(self, node):
-        var_name = node.value
-        val = self.global_scope.get(var_name)
-        if val is None:
-            raise NameError(repr(var_name))
-        else:
-            return val

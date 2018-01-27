@@ -80,9 +80,9 @@ def p_term(p):
 
 
 def p_part(p):
-    '''part : smallpart
+    """part : smallpart
             | smallpart TIMES smallpart
-            | smallpart DIVIDE smallpart'''
+            | smallpart DIVIDE smallpart"""
     if len(p) == 2:
         p[0] = p[1]
     else:
@@ -129,16 +129,18 @@ def p_str(p):
     """str : STRING"""
     p[0] = gotoASTs.String(p[1])
 
+
 def p_none(p):
     """none :"""
     p[0] = gotoASTs.NoOp()
+
 
 def p_error(p):
     if p:
 
         print("On line {}".format(p.lineno))
-        print("Syntax error at token type", p.type, "with value", p.value if
-              p.value else "None", "at posision", p.lexpos)
+        print("Syntax error at token type", p.type, "with value", p.value if p.value else "None", "at posision",
+              p.lexpos)
 
     else:
 
