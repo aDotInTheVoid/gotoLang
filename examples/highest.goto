@@ -1,0 +1,6 @@
+INPUT a;
+INPUT b;
+GOTO ((a-b)/((a-b)^2)^0.5)+4;
+OUTPUT b;
+GOTO 6;
+OUTPUT a;
