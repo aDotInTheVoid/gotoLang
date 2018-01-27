@@ -1,8 +1,16 @@
 import gotoParser
 import gotoLexer
 import gotoInterpriter
+from docopt import docopt
 
 
+docstring = """gotoLang.py.
+
+Usage:
+    gotoLang.py PROGRAM
+    gotoLang.py -h | --help
+"""
+    
 def run(program):
     parsed_program = gotoParser.parser().parse(program, lexer=gotoLexer.lexer)
     if not isinstance(parsed_program, list):
@@ -21,4 +29,5 @@ def run(program):
             line_num += 1
 
 if __name__ == "__main__":
-    run(open("../examples/Highest.goto", "r").read());
+    arguments = docopt(docstring, version='gotoLang 1.0')
+    run(open(arguments['PROGRAM'], "r").read());
