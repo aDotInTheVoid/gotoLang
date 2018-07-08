@@ -1,5 +1,5 @@
 # gotoLangV2
-_V2 because i suck at git_
+A programing language where the only control flow is ```goto expr```
 ## Requirements
 Requires ply and docopt. <br />  Install with
 `pip install ply`

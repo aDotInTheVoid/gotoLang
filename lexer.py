@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with gotoLang.  If not, see <https://www.gnu.org/licenses/>.
 
-import ply.lex as lex
+import ply
 
 reserved = {
     'INPUT': 'INPUT',
@@ -34,9 +34,10 @@ tokens = [
     # Assignment (=)
     'EQUALS',
 
-    # Delimeters ( ) ;
+    # Delimeters ((, ))
     'LPAREN', 'RPAREN',
 
+    # End of statement (;)
     'SEMI',
 ] + list(reserved.values())
 
@@ -69,13 +70,15 @@ t_GOTO = r'GOTO'
 t_ignore_COMMENT = r'\#.*'
 
 
-def t_NUMBER(t):  # Yes i Know this violated PEP8 but its neaded to work with PLY
+# Yes i Know this violated PEP8 but its neaded to work with PLY
+def t_NUMBER(t):  
     r"""[0-9]+(\.[0-9]+)?"""
     t.value = float(t.value)
     return t
 
 
-def t_STRING(t):  # Yes i Know this violated PEP8 but its neaded to work with PLY
+# Yes i Know this violated PEP8 but its neaded to work with PLY
+def t_STRING(t):  
     r"""\"([^\\\n]|(\\.))*?\\"""  # I think this is right ...
     t.value = t.value[1:-1]
     return t
@@ -90,4 +93,5 @@ def t_error(t):
     print("Illegal character '%s'" % t.value[0])
 
 
-lexer = lex.lex()
+def getLexer():
+    return ply.lex.lex()

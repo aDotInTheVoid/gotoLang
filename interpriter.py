@@ -74,7 +74,7 @@ class Interpriter(NodeVisitor):
             elif node.op == '^':
                 return self.visit(node.left) ** self.visit(node.right)
         except (ZeroDivisionError, TypeError) as e:
-            print("Error on line {}: {}".format(self.line_num, e))
+            print("Error on statement {}: {}".format(self.st_num, e))
             exit()
 
     def visit_unaryop(self, node):
@@ -102,3 +102,7 @@ class Interpriter(NodeVisitor):
 
     def visit_noop(self, node):
         pass
+
+
+def getInterpriter():
+    return Interpriter()

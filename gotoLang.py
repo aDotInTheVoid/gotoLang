@@ -16,38 +16,51 @@
 # You should have received a copy of the GNU General Public License
 # along with gotoLang.  If not, see <https://www.gnu.org/licenses/>.
 
-import parser
-import lexer
-import interpriter
 from docopt import docopt
 
-docstring = """gotoLang.py.
+from parser import getParser
+from lexer import getLexer
+from interpriter import getInterpriter
+
+__doc__ = """gotoLang
+
+a programing language where `goto expr` is the only control flow
 
 Usage:
-    gotoLang.py PROGRAM
-    gotoLang.py -h | --help
+    gotolang.py PROGRAM
+    gotolang.py -h | --help
 """
 
 
 def run(program):
-    parsed_program = parser.parser().parse(program, lexer=lexer.lexer)
-    if not isinstance(parsed_program, list):
-        parsed_program = [parsed_program]
 
-    runner = interpriter.Interpriter()
-    line_num = 0
+    # Generate the abstact syntax tree
+    ast = getParser().parse(program, lexer=getLexer())
 
-    while 0 <= line_num < len(parsed_program):
-        runner.line_num = line_num
-        next_line_num = runner.visit(parsed_program[int(line_num)])
+    # Cast to list
+    if not isinstance(ast, list):
+        ast = [ast]
 
-        if next_line_num is not None:
-            line_num = next_line_num
+    # initialise interpriter
+    cmdrunner = getInterpriter()
+    statement_pos = 0
 
+    # Mainloop
+    while 0 <= statement_pos < len(ast):
+
+        # For error reporing
+        cmdrunner.st_num = statement_pos
+
+        # exex statement and find next one
+        next_statement_num = cmdrunner.visit(ast[int(statement_pos)])
+
+        # last statement num was not a goto
+        if next_statement_num is None:
+            statement_pos += 1
+        # if it was a goto, then goto there
         else:
-            line_num += 1
+            statement_pos = next_statement_num
 
 
 if __name__ == "__main__":
-    arguments = docopt(docstring, version='gotoLang 1.1')
-    run(open(arguments['PROGRAM'], "r").read())
+    arguments = docopt(__doc__, version='gotoLang 1.1')

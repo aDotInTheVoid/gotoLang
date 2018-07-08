@@ -6,6 +6,7 @@ tokens = lexer.tokens
 
 
 # Top level AST
+# TODO: make nicer
 def p_program(p):
     """program : statement SEMI
                | statement SEMI program"""
@@ -139,7 +140,8 @@ def p_error(p):
     if p:
 
         print("On line {}".format(p.lineno))
-        print("Syntax error at token type", p.type, "with value", p.value if p.value else "None", "at posision",
+        print("Syntax error at token type", p.type, "with value", 
+              p.value if p.value else "None", "at posision",
               p.lexpos)
 
     else:
@@ -147,6 +149,6 @@ def p_error(p):
         print("Syntax error at EOF")
 
 
-def parser():
+def getParser():
     """Give a parser."""
     return yacc.yacc()
