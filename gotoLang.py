@@ -1,6 +1,6 @@
-import gotoParser
-import gotoLexer
-import gotoInterpriter
+import parser
+import lexer
+import interpriter
 from docopt import docopt
 
 docstring = """gotoLang.py.
@@ -12,16 +12,16 @@ Usage:
 
 
 def run(program):
-    parsed_program = gotoParser.parser().parse(program, lexer=gotoLexer.lexer)
+    parsed_program = parser.parser().parse(program, lexer=lexer.lexer)
     if not isinstance(parsed_program, list):
         parsed_program = [parsed_program]
 
-    interpriter = gotoInterpriter.Interpriter()
+    runner = interpriter.Interpriter()
     line_num = 0
 
     while 0 <= line_num < len(parsed_program):
-        interpriter.line_num = line_num
-        next_line_num = interpriter.visit(parsed_program[int(line_num)])
+        runner.line_num = line_num
+        next_line_num = runner.visit(parsed_program[int(line_num)])
 
         if next_line_num is not None:
             line_num = next_line_num

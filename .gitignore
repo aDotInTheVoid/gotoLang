@@ -226,5 +226,5 @@ $RECYCLE.BIN/
 
 
 # End of https://www.gitignore.io/api/vim,macos,python,windows,intellij+all
-glib/parser.out
-glib/parsetab.py
+parser.out
+parsetab.py
