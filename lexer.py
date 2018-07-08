@@ -5,7 +5,7 @@
 # This file is part of gotoLang.
 
 # gotoLang is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License version 3 
+# it under the terms of the GNU General Public License version 3
 # as published by the Free Software Foundation
 
 # gotoLang is distributed in the hope that it will be useful,
@@ -25,20 +25,20 @@ reserved = {
 }
 
 tokens = [
-             # Literals (identifier, float constant, string constant)
-             'ID', 'NUMBER', 'STRING',
+    # Literals (identifier, float constant, string constant)
+    'ID', 'NUMBER', 'STRING',
 
-             # Operators (+,-,*,/,%,^)
-             'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'MODULO', 'POW',
+    # Operators (+,-,*,/,%,^)
+    'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'MODULO', 'POW',
 
-             # Assignment (=)
-             'EQUALS',
+    # Assignment (=)
+    'EQUALS',
 
-             # Delimeters ( ) ;
-             'LPAREN', 'RPAREN',
+    # Delimeters ( ) ;
+    'LPAREN', 'RPAREN',
 
-             'SEMI',
-         ] + list(reserved.values())
+    'SEMI',
+] + list(reserved.values())
 
 t_ignore = ' \t'
 

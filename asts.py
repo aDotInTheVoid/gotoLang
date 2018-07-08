@@ -5,7 +5,7 @@
 # This file is part of gotoLang.
 
 # gotoLang is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License version 3 
+# it under the terms of the GNU General Public License version 3
 # as published by the Free Software Foundation
 
 # gotoLang is distributed in the hope that it will be useful,
@@ -15,6 +15,7 @@
 
 # You should have received a copy of the GNU General Public License
 # along with gotoLang.  If not, see <https://www.gnu.org/licenses/>.
+
 
 class AST(object):
     """Parent class for AST Nodes."""
