@@ -1,4 +1,4 @@
-# interpriter.py: interprites gotoLang Abstract Syntax Trees
+"""interpriter.py: interprites gotoLang Abstract Syntax Trees."""
 
 # Copyright 2017, 2018 Nixon Enraght-Moony
 
@@ -32,17 +32,23 @@ class NodeVisitor(object):
 
 
 class Interpriter(NodeVisitor):
-    """Inputs AST, returns integer that that ast evaluates to."""
+    """Contains method for looking at spacific gotoLang nodes."""
 
     def __init__(self):
-        """Save the variables."""
+        """Create a dict for all variables."""
+        # TODO: typesystem?
         self.global_scope = dict()
 
     def visit_assign(self, node):
+        """Find the value of the expression and assign it to the variable."""
         var_name = node.left.value
         self.global_scope[var_name] = self.visit(node.right)
 
     def visit_input(self, node):
+        """Input a value and assign it to the variable.
+
+        If the value of the input is a float then cast it to a float
+        """
         value = input()
 
         try:
@@ -53,9 +59,16 @@ class Interpriter(NodeVisitor):
         self.global_scope[node.var.value] = value
 
     def visit_output(self, node):
+        """Print the value of the expression."""
         print(self.visit(node.expr))
 
     def visit_goto(self, node):
+        """Evaluate the expression and return it.
+
+        This is the only function that returns a value (intead of None) which
+        allows the run() function in gotolang.py to realise this was a goto
+        expression and run the next statement based on the value of the goto.
+        """
         return self.visit(node.expr)
 
     def visit_binop(self, node):
@@ -90,6 +103,7 @@ class Interpriter(NodeVisitor):
         return node.value
 
     def visit_var(self, node):
+        """If a variable exists return the value, otherwise NameError."""
         var_name = node.value
         val = self.global_scope.get(var_name)
         if val is None:
@@ -98,11 +112,14 @@ class Interpriter(NodeVisitor):
             return val
 
     def visit_string(self, node):
+        """Return the strings value."""
         return node.value
 
     def visit_noop(self, node):
+        """Do nothing."""
         pass
 
 
 def getInterpriter():
+    """Wraper func needed for consistancy with other modules."""
     return Interpriter()

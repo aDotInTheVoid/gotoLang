@@ -1,3 +1,21 @@
+"""interpriter.py: interprites gotoLang Abstract Syntax Trees."""
+
+# Copyright 2017, 2018 Nixon Enraght-Moony
+
+# This file is part of gotoLang.
+
+# gotoLang is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 3
+# as published by the Free Software Foundation
+
+# gotoLang is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with gotoLang.  If not, see <https://www.gnu.org/licenses/>.
+
 from ply import yacc
 import asts
 import lexer
@@ -9,8 +27,8 @@ tokens = lexer.tokens
 # TODO: make nicer
 def p_program(p):
     """program : statement SEMI
-               | statement SEMI program"""
-
+               | statement SEMI program
+    """
     if len(p) == 3:
         p[0] = p[1]
     else:
@@ -28,13 +46,15 @@ def p_statement(p):
     """statement : io_statement
                  | goto_statement
                  | assignment_statement
-                 | none"""
+                 | none
+    """
     p[0] = p[1]
 
 
 def p_io_statement(p):
     """io_statement : input_statement
-                    | output_statement"""
+                    | output_statement
+    """
     p[0] = p[1]
 
 
@@ -45,12 +65,11 @@ def p_input_statement(p):
 
 def p_output_statement(p):
     """output_statement : OUTPUT expr"""
-
     p[0] = asts.Output(p[2])
 
 
 def p_goto_statement(p):
-    """goto_statement : GOTO expr """
+    """goto_statement : GOTO expr"""
     p[0] = asts.Goto(p[2])
 
 
@@ -59,11 +78,11 @@ def p_assignment_statement(p):
     p[0] = asts.Assign(p[1], p[2], p[3])
 
 
-# Expression & Jazz
+# Expressions and opperators
 def p_expr(p):
     """expr : term
-            | term MODULO term"""
-
+            | term MODULO term
+    """
     if len(p) == 2:
         p[0] = p[1]
     else:
@@ -73,7 +92,8 @@ def p_expr(p):
 def p_term(p):
     """term : part
             | part PLUS part
-            | part MINUS part """
+            | part MINUS part
+    """
     if len(p) == 2:
         p[0] = p[1]
     else:
@@ -83,7 +103,8 @@ def p_term(p):
 def p_part(p):
     """part : smallpart
             | smallpart TIMES smallpart
-            | smallpart DIVIDE smallpart"""
+            | smallpart DIVIDE smallpart
+    """
     if len(p) == 2:
         p[0] = p[1]
     else:
@@ -92,7 +113,8 @@ def p_part(p):
 
 def p_smallpart(p):
     """smallpart : factor
-                 | factor POW factor"""
+                 | factor POW factor
+    """
     if len(p) == 2:
         p[0] = p[1]
     else:
@@ -105,7 +127,8 @@ def p_factor(p):
            | num
            | str
            | LPAREN expr RPAREN
-           | var"""
+           | var
+    """
     if len(p) == 2:
         p[0] = p[1]
     elif len(p) == 3:
@@ -114,7 +137,7 @@ def p_factor(p):
         p[0] = p[2]
 
 
-# Terminal
+# Terminals
 def p_variable(p):
     """var : ID"""
 
@@ -137,6 +160,7 @@ def p_none(p):
 
 
 def p_error(p):
+    """Reprot an error if one turns up."""
     if p:
 
         print("On line {}".format(p.lineno))

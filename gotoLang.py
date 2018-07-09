@@ -1,4 +1,4 @@
-# gotolang.py: entrypoint for running gotolang programs
+"""gotolang.py: entrypoint for running gotolang programs."""
 
 # Copyright 2017, 2018 Nixon Enraght-Moony
 
@@ -33,7 +33,7 @@ Usage:
 
 
 def run(program):
-
+    """Take a gotolang program (as a string) and runs it."""
     # Generate the abstact syntax tree
     ast = getParser().parse(program, lexer=getLexer())
 

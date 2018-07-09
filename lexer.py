@@ -1,4 +1,4 @@
-# lexer.py: tokenises gotoLang source
+"""lexer.py: tokenises gotoLang source code."""
 
 # Copyright 2017, 2018 Nixon Enraght-Moony
 
@@ -44,7 +44,8 @@ tokens = [
 t_ignore = ' \t'
 
 
-def t_ID(t):  # Yes i Know this violated PEP8 but its neaded to work with PLY
+# Yes i Know this violates PEP8/PEP257 but its neaded to work with PLY
+def t_ID(t):  
     r"""[a-zA-Z_][a-zA-Z_0-9]*"""
     t.type = reserved.get(t.value, 'ID')  # Check for reserved words
     return t
@@ -70,15 +71,15 @@ t_GOTO = r'GOTO'
 t_ignore_COMMENT = r'\#.*'
 
 
-# Yes i Know this violated PEP8 but its neaded to work with PLY
-def t_NUMBER(t):  
+# Yes i Know this violates PEP8/PEP257 but its neaded to work with PLY
+def t_NUMBER(t):
     r"""[0-9]+(\.[0-9]+)?"""
     t.value = float(t.value)
     return t
 
 
-# Yes i Know this violated PEP8 but its neaded to work with PLY
-def t_STRING(t):  
+# Yes i Know this violates PEP8/PEP257 but its neaded to work with PLY
+def t_STRING(t):
     r"""\"([^\\\n]|(\\.))*?\""""  # I think this is right ...
     t.value = t.value[1:-1]
     return t
@@ -90,8 +91,11 @@ def t_newline(t):
 
 
 def t_error(t):
+    """Raise an error when you cant lex."""
+    # TODO: More usefull errors
     print("Illegal character '%s'" % t.value[0])
 
 
 def getLexer():
+    """Return a lexer with the tokens we set up."""
     return ply.lex.lex()

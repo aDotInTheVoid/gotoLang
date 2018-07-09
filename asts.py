@@ -1,4 +1,4 @@
-# asts.py: defines Abstract Syntax Tree classes for gotoLang
+"""asts.py: defines Abstract Syntax Tree classes for gotoLang."""
 
 # Copyright 2017, 2018 Nixon Enraght-Moony
 
@@ -23,33 +23,38 @@ class AST(object):
     pass
 
 
-class Programm(AST):
-    def __init__(self):
-        self.children = []
-
-
 # Statements
 class Assign(AST):
-    """represents ID ASSIGN expr"""
+    """assignment_statement : var EQUALS expr."""
 
     def __init__(self, left, op, right):
+        """Store variables."""
         self.left = left
         self.op = op
         self.right = right
 
 
 class Input(AST):
+    """input_statement : INPUT var."""
+
     def __init__(self, var):
+        """Store variables."""
         self.var = var
 
 
 class Output(AST):
+    """output_statement : OUTPUT expr."""
+
     def __init__(self, expr):
+        """Store variables."""
         self.expr = expr
 
 
 class Goto(AST):
+    """goto_statement : GOTO expr."""
+
     def __init__(self, expr):
+        """Store variables."""
         self.expr = expr
 
 
@@ -58,7 +63,7 @@ class BinOp(AST):
     """Binary Operator AST Node. Has 2 CHILDREN."""
 
     def __init__(self, left, op, right):
-        """Save the variables."""
+        """Store variables."""
         self.left = left
         self.op = op
         self.right = right
@@ -68,33 +73,37 @@ class UnaryOp(AST):
     """Unary Operator AST node. Has 1 child."""
 
     def __init__(self, op, expr):
-        """Save the variables."""
+        """Store variables."""
         self.op = op
         self.expr = expr
 
 
 # Terminals
 class Num(AST):
-    """Number AST Node. Has a value but no children."""
+    r"""matches r'[0-9]+(\.[0-9]+)?'."""
 
     def __init__(self, value):
-        """Save the variables."""
-
+        """Store variables."""
         self.value = value
 
 
 class Var(AST):
-    """The Var node is constructed out of ID token."""
+    """matches r'[a-zA-Z_][a-zA-Z_0-9]*'."""
 
     def __init__(self, value):
+        """Store variables."""
         self.value = value
 
 
 class String(AST):
+    """matches r'[a-zA-Z_][a-zA-Z_0-9]*'."""
+
     def __init__(self, value):
+        """Store variables."""
         self.value = value
 
 
 class NoOp(AST):
-    """Does nothing"""
+    """Does nothing."""
+
     pass
