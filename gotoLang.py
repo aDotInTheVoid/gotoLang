@@ -64,3 +64,4 @@ def run(program):
 
 if __name__ == "__main__":
     arguments = docopt(__doc__, version='gotoLang 1.1')
+    run(open(arguments['PROGRAM'], "r").read())
