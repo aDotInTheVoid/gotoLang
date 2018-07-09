@@ -79,7 +79,7 @@ def t_NUMBER(t):
 
 # Yes i Know this violated PEP8 but its neaded to work with PLY
 def t_STRING(t):  
-    r"""\"([^\\\n]|(\\.))*?\\"""  # I think this is right ...
+    r"""\"([^\\\n]|(\\.))*?\""""  # I think this is right ...
     t.value = t.value[1:-1]
     return t
 
