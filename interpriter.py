@@ -79,9 +79,11 @@ class Interpriter(NodeVisitor):
                 try:
                     return self.visit(node.left) + self.visit(node.right)
                 except TypeError as e:
-                    types = set(map(lambda x: type(self.visit(x)), (node.left, node.right)))
+                    types = set(map(lambda x: type(self.visit(x)),
+                                    (node.left, node.right)))
                     if types == set((float, str)):
-                        return str(self.visit(node.left)) + str(self.visit(node.right))
+                        return str(self.visit(node.left))
+                        + str(self.visit(node.right))
                     else:
                         raise e
 

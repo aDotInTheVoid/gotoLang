@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with gotoLang.  If not, see <https://www.gnu.org/licenses/>.
 
+
 from docopt import docopt
 
 from parser import getParser
@@ -35,6 +36,7 @@ Usage:
 def run(program):
     """Take a gotolang program (as a string) and runs it."""
     # Generate the abstact syntax tree
+
     ast = getParser().parse(program, lexer=getLexer())
 
     # Cast to list

@@ -47,7 +47,7 @@ t_ignore = ' \t'
 
 
 # Yes i Know this violates PEP8/PEP257 but its neaded to work with PLY
-def t_ID(t):  
+def t_ID(t):
     r"""[a-zA-Z_][a-zA-Z_0-9]*"""
     t.type = reserved.get(t.value, 'ID')  # Check for reserved words
     return t
