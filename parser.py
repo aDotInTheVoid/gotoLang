@@ -16,7 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with gotoLang.  If not, see <https://www.gnu.org/licenses/>.
 
+import sys
+
 from ply import yacc
+
 import asts
 import lexer
 
@@ -163,16 +166,18 @@ def p_error(p):
     """Reprot an error if one turns up."""
     if p:
 
-        print("On line {}".format(p.lineno))
+        print("On line {}".format(p.lineno), file=sys.stderr)
         print("Syntax error at token type", p.type, "with value", 
               p.value if p.value else "None", "at posision",
-              p.lexpos)
+              p.lexpos, file=sys.stderr)
 
     else:
 
-        print("Syntax error at EOF")
+        print("Syntax error at EOF", file=sys.stderr)
+
+    exit(1)
 
 
 def getParser():
     """Give a parser."""
-    return yacc.yacc()
+    return yacc.yacc(debug=True)

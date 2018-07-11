@@ -16,7 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with gotoLang.  If not, see <https://www.gnu.org/licenses/>.
 
-import ply
+import sys
+
+import ply.lex
 
 reserved = {
     'INPUT': 'INPUT',
@@ -93,7 +95,7 @@ def t_newline(t):
 def t_error(t):
     """Raise an error when you cant lex."""
     # TODO: More usefull errors
-    print("Illegal character '%s'" % t.value[0])
+    print("Illegal character '%s'" % t.value[0], file=sys.stderr)
 
 
 def getLexer():
