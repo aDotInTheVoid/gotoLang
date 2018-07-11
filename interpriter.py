@@ -75,7 +75,16 @@ class Interpriter(NodeVisitor):
         """Visit and evaluate a BinOP Node."""
         try:
             if node.op == '+':
-                return self.visit(node.left) + self.visit(node.right)
+                # Extra logic for string concatination
+                try:
+                    return self.visit(node.left) + self.visit(node.right)
+                except TypeError as e:
+                    types = set(map(lambda x: type(self.visit(x)), (node.left, node.right)))
+                    if types == set((float, str)):
+                        return str(self.visit(node.left)) + str(self.visit(node.right))
+                    else:
+                        raise e
+
             elif node.op == '-':
                 return self.visit(node.left) - self.visit(node.right)
             elif node.op == '*':

@@ -1,0 +1,9 @@
+bottles = 10;
+OUTPUT bottles + " Bottles of beer on the wall,";
+OUTPUT bottles + " Bottles of beer.";
+OUTPUT "Take one down, pass it around,";
+bottles = bottles - 1;
+OUTPUT bottles + " bottles of beer on the wall.";
+OUTPUT "";
+GOTO ((0 - bottles)/((0 - bottles)^2)^0.5)+9;
+GOTO 1;
