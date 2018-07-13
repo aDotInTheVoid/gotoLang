@@ -83,8 +83,13 @@ def p_assignment_statement(p):
 
 # Expressions and opperators
 def p_expr(p):
-    """expr : term
-            | term MODULO term
+    """expr : logical_or_expression"""
+    p[0] = p[1]
+
+
+def p_logical_or_expression(p):
+    """logical_or_expression : logical_and_expression
+                             | logical_or_expression LOGICALOR logical_and_expression
     """
     if len(p) == 2:
         p[0] = p[1]
@@ -92,10 +97,9 @@ def p_expr(p):
         p[0] = asts.BinOp(p[1], p[2], p[3])
 
 
-def p_term(p):
-    """term : part
-            | part PLUS part
-            | part MINUS part
+def p_logical_and_expression(p):
+    """logical_and_expression : equality_expression
+                              | logical_and_expression LOGICALAND equality_expression
     """
     if len(p) == 2:
         p[0] = p[1]
@@ -103,10 +107,10 @@ def p_term(p):
         p[0] = asts.BinOp(p[1], p[2], p[3])
 
 
-def p_part(p):
-    """part : smallpart
-            | smallpart TIMES smallpart
-            | smallpart DIVIDE smallpart
+def p_equality_expression(p):
+    """equality_expression : relational_expression
+                           | equality_expression EQUALTO relational_expression
+                           | equality_expression NOTEQUALTO relational_expression           
     """
     if len(p) == 2:
         p[0] = p[1]
@@ -114,9 +118,12 @@ def p_part(p):
         p[0] = asts.BinOp(p[1], p[2], p[3])
 
 
-def p_smallpart(p):
-    """smallpart : factor
-                 | factor POW factor
+def p_relational_expression(p):
+    """relational_expression : additive_expression
+                             | relational_expression GREATER additive_expression
+                             | relational_expression GREATEREQ additive_expression
+                             | relational_expression LESS additive_expression
+                             | relational_expression LESSEQ additive_expression
     """
     if len(p) == 2:
         p[0] = p[1]
@@ -124,23 +131,83 @@ def p_smallpart(p):
         p[0] = asts.BinOp(p[1], p[2], p[3])
 
 
-def p_factor(p):
-    """factor : PLUS factor
-           | MINUS factor
-           | num
-           | str
-           | LPAREN expr RPAREN
-           | var
+def p_additive_expression(p):
+    """additive_expression : multiplicative_expression
+                    | additive_expression PLUS multiplicative_expression
+                    | additive_expression MINUS multiplicative_expression
     """
     if len(p) == 2:
         p[0] = p[1]
-    elif len(p) == 3:
+    else:
+        p[0] = asts.BinOp(p[1], p[2], p[3])
+
+
+def p_multiplicative_expression(p):
+    """multiplicative_expression : cast_expression
+                                 | multiplicative_expression TIMES cast_expression
+                                 | multiplicative_expression DIVIDE cast_expression
+                                 | multiplicative_expression MODULO cast_expression
+    """
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = asts.BinOp(p[1], p[2], p[3])
+
+
+def p_cast_expression(p):
+    """cast_expression : unary_expression
+                       | LPAREN type_name RPAREN cast_expression
+    """
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = asts.UnaryOp(p[3], p[5])
+
+
+def p_unary_expression(p):
+    """unary_expression : pow_expression
+                        | PLUS cast_expression
+                        | MINUS cast_expression
+                        | NOT cast_expression
+    """
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
         p[0] = asts.UnaryOp(p[1], p[2])
+
+
+def p_pow_expression(p):
+    """pow_expression : primary_expression
+                      | primary_expression POW pow_expression
+    """
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = asts.BinOp(p[1], p[2], p[3])
+
+
+def p_primary_expression(p):
+    """primary_expression : num
+                          | str
+                          | LPAREN expr RPAREN
+                          | var
+    """
+    if len(p) == 2:
+        p[0] = p[1]
     else:
         p[0] = p[2]
 
 
 # Terminals
+
+def p_type_name(p):
+    """type_name : STR
+                 | INT
+                 | BOOL
+    """
+    p[0] = p[1]
+
+
 def p_variable(p):
     """var : ID"""
 
@@ -167,7 +234,7 @@ def p_error(p):
     if p:
 
         print("On line {}".format(p.lineno), file=sys.stderr)
-        print("Syntax error at token type", p.type, "with value", 
+        print("Syntax error at token type", p.type, "with value",
               p.value if p.value else "None", "at posision",
               p.lexpos, file=sys.stderr)
 
@@ -178,6 +245,13 @@ def p_error(p):
     exit(1)
 
 
-def getParser():
+def getParser(**kwargs):
     """Give a parser."""
-    return yacc.yacc(debug=True)
+    return yacc.yacc(**kwargs)
+
+
+if __name__ == "__main__":
+    import logging
+    log = logging.getLogger()
+    log.level = logging.DEBUG
+    getParser(debug=True, debuglog=log)
