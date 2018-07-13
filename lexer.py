@@ -23,15 +23,35 @@ import ply.lex
 reserved = {
     'INPUT': 'INPUT',
     'OUTPUT': 'OUTPUT',
-    'GOTO': 'GOTO'
+    'GOTO': 'GOTO',
+    'STR': 'STR',
+    'INT': 'INT',
+    'FLOAT': 'FLOAT',
+    'BOOL': 'BOOL',
 }
 
 tokens = [
     # Literals (identifier, float constant, string constant)
     'ID', 'NUMBER', 'STRING',
 
-    # Operators (+,-,*,/,%,^)
-    'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'MODULO', 'POW',
+    ################################
+    # Operators from first to last #
+    ################################
+
+    # + - !
+    'PLUS', 'MINUS', 'NOT',
+    # ^
+    'POW',
+    # * / %
+    'TIMES', 'DIVIDE', 'MODULO',
+    # > >= < <=
+    'GREATER', 'GREATEREQ', 'LESS', 'LESSEQ',
+    # == !=
+    'EQUALTO', 'NOTEQUALTO',
+    # &&
+    'LOGICALAND',
+    # ||
+    'LOGICALOR',
 
     # Assignment (=)
     'EQUALS',
@@ -55,15 +75,31 @@ def t_ID(t):
 
 t_PLUS = r'\+'
 t_MINUS = r'-'
+t_NOT = r'!'
+
+t_POW = r'\^'
+
 t_TIMES = r'\*'
 t_DIVIDE = r'/'
 t_MODULO = r'%'
-t_POW = r'\^'
+
+t_GREATER = r'>'
+t_GREATEREQ = r'>='
+t_LESS = r'<'
+t_LESSEQ = r'<='
+
+t_EQUALTO = r'=='
+t_NOTEQUALTO = r'!='
+
+t_LOGICALAND = r'&&'
+
+t_LOGICALOR = r'\|\|'
 
 t_EQUALS = r'='
 
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
+
 t_SEMI = r';'
 
 t_INPUT = r'INPUT'
@@ -76,7 +112,11 @@ t_ignore_COMMENT = r'\#.*'
 # Yes i Know this violates PEP8/PEP257 but its neaded to work with PLY
 def t_NUMBER(t):
     r"""[0-9]+(\.[0-9]+)?"""
-    t.value = float(t.value)
+    if '.' in t.value:
+        t.value = float(t.value)
+    else:
+        t.value = int(t.value)
+    
     return t
 
 
@@ -98,6 +138,11 @@ def t_error(t):
     print("Illegal character '%s'" % t.value[0], file=sys.stderr)
 
 
-def getLexer():
+def getLexer(**kwargs):
     """Return a lexer with the tokens we set up."""
-    return ply.lex.lex()
+    return ply.lex.lex(**kwargs)
+
+
+if __name__ == '__main__':
+    lexer = getLexer(debug=0)
+    ply.lex.runmain(lexer=lexer)
