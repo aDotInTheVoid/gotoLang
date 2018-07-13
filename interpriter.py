@@ -51,11 +51,6 @@ class Interpriter(NodeVisitor):
         """
         value = input()
 
-        try:
-            value = float(value)
-        except ValueError:
-            pass
-
         self.global_scope[node.var.value] = value
 
     def visit_output(self, node):
@@ -75,18 +70,7 @@ class Interpriter(NodeVisitor):
         """Visit and evaluate a BinOP Node."""
         try:
             if node.op == '+':
-                # Extra logic for string concatination
-                try:
-                    return self.visit(node.left) + self.visit(node.right)
-                except TypeError as e:
-                    types = set(map(lambda x: type(self.visit(x)),
-                                    (node.left, node.right)))
-                    if types == set((float, str)):
-                        return str(self.visit(node.left))
-                        + str(self.visit(node.right))
-                    else:
-                        raise e
-
+                return self.visit(node.left) + self.visit(node.right)
             elif node.op == '-':
                 return self.visit(node.left) - self.visit(node.right)
             elif node.op == '*':
@@ -97,17 +81,49 @@ class Interpriter(NodeVisitor):
                 return self.visit(node.left) % self.visit(node.right)
             elif node.op == '^':
                 return self.visit(node.left) ** self.visit(node.right)
+            elif node.op == '<':
+                return int(self.visit(node.left) < self.visit(node.right))
+            elif node.op == '<=':
+                return int(self.visit(node.left) <= self.visit(node.right))
+            elif node.op == '>':
+                return int(self.visit(node.left) > self.visit(node.right))
+            elif node.op == '>=':
+                return int(self.visit(node.left) >= self.visit(node.right))
+            elif node.op == '==':
+                return int(self.visit(node.left) == self.visit(node.right))
+            elif node.op == '!=':
+                return int(self.visit(node.left) != self.visit(node.right)) 
+            elif node.op == '&&':
+                return int(self.visit(node.left) and self.visit(node.right))
+            elif node.op == '||':
+                return int(self.visit(node.left) or self.visit(node.right))                            
+            else:
+                raise NotImplementedError(
+                    "No method for binary opperator {}".format(node.op))
         except (ZeroDivisionError, TypeError) as e:
             print("Error on statement {}: {}".format(self.st_num, e))
             exit()
 
     def visit_unaryop(self, node):
         """Visit and evaluate a UnaryOp."""
-        op = node.op
-        if op == "+":
+        
+        if node.op == '+':
             return self.visit(node.expr)
-        else:
+        elif node.op == '-':
             return -self.visit(node.expr)
+        elif node.op == 'STR':
+            return str(self.visit(node.expr))
+        elif node.op == 'INT':
+            return int(self.visit(node.expr))
+        elif node.op == 'FLOAT':
+            return float(self.visit(node.expr))
+        elif node.op == 'BOOL':
+            return int(bool(self.visit(node.expr)))
+        elif node.op == '!':
+            return int(not self.visit(node.expr))
+        else:
+            raise NotImplementedError(
+                "No method for unary opperator {}".format(node.op))
 
     def visit_num(self, node):
         """Return a numbers value."""
