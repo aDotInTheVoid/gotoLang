@@ -1,0 +1,14 @@
+bottles = 99;
+s = "s";
+OUTPUT (STR) bottles + " bottle" + s + " of beer on the wall,";
+OUTPUT (STR) bottles + " bottle" + s + " of beer.";
+OUTPUT "Take one down, pass it around,";
+bottles = bottles - 1;
+s = (bottles > 1) * "s";
+GOTO 5 * (bottles == 0) + 8;
+OUTPUT (STR) bottles + " bottle" + s + " of beer on the wall.";
+OUTPUT "";
+GOTO (bottles > 0) + 10;
+GOTO 12;
+GOTO 2;
+OUTPUT "No bottles of beer on the wall.";
