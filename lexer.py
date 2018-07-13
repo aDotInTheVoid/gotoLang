@@ -26,6 +26,7 @@ reserved = {
     'GOTO': 'GOTO',
     'STR': 'STR',
     'INT': 'INT',
+    'FLOAT': 'FLOAT',
     'BOOL': 'BOOL',
 }
 
@@ -111,7 +112,11 @@ t_ignore_COMMENT = r'\#.*'
 # Yes i Know this violates PEP8/PEP257 but its neaded to work with PLY
 def t_NUMBER(t):
     r"""[0-9]+(\.[0-9]+)?"""
-    t.value = float(t.value)
+    if '.' in t.value:
+        t.value = float(t.value)
+    else:
+        t.value = int(t.value)
+    
     return t
 
 
@@ -135,7 +140,7 @@ def t_error(t):
 
 def getLexer(**kwargs):
     """Return a lexer with the tokens we set up."""
-    return ply.lex.lex(debug=debug)
+    return ply.lex.lex(**kwargs)
 
 
 if __name__ == '__main__':

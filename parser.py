@@ -161,7 +161,7 @@ def p_cast_expression(p):
     if len(p) == 2:
         p[0] = p[1]
     else:
-        p[0] = asts.UnaryOp(p[3], p[5])
+        p[0] = asts.UnaryOp(p[2], p[4])
 
 
 def p_unary_expression(p):
@@ -204,6 +204,7 @@ def p_type_name(p):
     """type_name : STR
                  | INT
                  | BOOL
+                 | FLOAT
     """
     p[0] = p[1]
 
