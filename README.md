@@ -107,7 +107,7 @@ Not Equal to | `!=` | 7 | Left
 |||
 Logical And | `&&` | 8 | Left
 |||
-Logical Or `||` | 9 | Left
+Logical Or | `\|\|`  | 9 | Left
 
 
 
