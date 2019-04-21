@@ -21,7 +21,7 @@ OUTPUT "No bottles of beer on the wall.";
 ## Requirements
 - Python 3
 - Virtualenv 
-## Instalation
+## Installation
 ```bash
 git clone https://github.com/aDotInTheVoid/gotoLang.git
 virtualenv -p python3 venv
@@ -36,7 +36,7 @@ python3 gotoLang.py path/to/program.goto
 all gotoLang keywords are uppercase. 
 
 ### Program Structure
-A program is a list of statements seperated by semicolons. Their are 3 types of statements:
+A program is a list of statements separated by semicolons. There are 3 types of statements:
 
 - IO Statements
 - GOTO Statements
@@ -48,7 +48,7 @@ A program is a list of statements seperated by semicolons. Their are 3 types of 
 ```
 INPUT some_var_name
 ```
-Assigns `some_var_name` to a line read from `stdin` exluding the `\n`
+Assigns `some_var_name` to a line read from `stdin` excluding the `\n`
 #### Output 
 ```
 OUTPUT expr
@@ -58,7 +58,7 @@ Prints the value of `expr` to `stdout`
 ```
 GOTO expr
 ```
-normaly statements are executed sequentialy. However after the execution of a GOTO Statements, the next statement executed will be the `expr`th statement of the program (starting at 0, of cource). If `expr` is not an integer, or out of range, this is a error.
+normally statements are executed sequentially. However after the execution of a GOTO Statements, the next statement executed will be the `expr`th statement of the program (starting at 0, of course). If `expr` is not an integer, or out of range, this is a error.
 ### Assign Statements
 ```
 id = expr
@@ -74,11 +74,11 @@ Must match `r"""\"([^\\\n]|(\\.))*?\""""`
 #### Variables
 Must match `r"""[a-zA-Z_][a-zA-Z_0-9]*"""`
 ### Operators
-Operators generaly work like c. They can be nested with patenthesis (`(`,`)`).
+Operators generally work like c. They can be nested with parenthesis (`(`,`)`).
 
 Operators are listed from highest to lowest precedence.
 
-Operator   | Symbol | Precidence | Associativity
+Operator   | Symbol | Precedence | Associativity
 -----------|--------|------------|--------------
 Exponential| `^`    | 1          | Right
 |||
@@ -116,11 +116,3 @@ Logical And | `&&` | 8 | Left
 |||
 |||
 Logical Or | `\|\|`  | 9 | Left
-
-
-
-
-
-
-
-
