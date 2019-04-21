@@ -17,20 +17,9 @@
 # along with gotoLang.  If not, see <https://www.gnu.org/licenses/>.
 
 
-from docopt import docopt
-
 from parser import getParser
 from lexer import getLexer
 from interpriter import getInterpriter
-
-__doc__ = """gotoLang
-
-a programing language where `goto expr` is the only control flow
-
-Usage:
-    gotolang.py PROGRAM
-    gotolang.py -h | --help
-"""
 
 
 def run(program):
@@ -65,5 +54,5 @@ def run(program):
 
 
 if __name__ == "__main__":
-    arguments = docopt(__doc__, version='gotoLang 1.1')
-    run(open(arguments['PROGRAM'], "r").read())
+    import sys
+    run(open(sys.argv[1], "r").read())
