@@ -1,5 +1,23 @@
 # gotoLang
 A programing language where the only control flow is ```goto expr```
+## Example program
+```
+bottles = 99;
+s = "s";
+OUTPUT (STR) bottles + " bottle" + s + " of beer on the wall,";
+OUTPUT (STR) bottles + " bottle" + s + " of beer.";
+OUTPUT "Take one down, pass it around,";
+bottles = bottles - 1;
+s = (bottles > 1) * "s";
+GOTO 5 * (bottles == 0) + 8;
+OUTPUT (STR) bottles + " bottle" + s + " of beer on the wall.";
+OUTPUT "";
+GOTO (bottles > 0) + 10;
+GOTO 12;
+GOTO 2;
+OUTPUT "No bottles of beer on the wall.";
+```
+
 ## Requirements
 - Python 3
 - Virtualenv 
@@ -56,7 +74,45 @@ Must match `r"""\"([^\\\n]|(\\.))*?\""""`
 #### Variables
 Must match `r"""[a-zA-Z_][a-zA-Z_0-9]*"""`
 ### Operators
-Operators are listed top to bottom, in descending precedence
+Operators generaly work like c. They can be nested with patenthesis (`(`,`)`).
+
+Operators are listed from highest to lowest precedence.
+
+Operator   | Symbol | Precidence | Associativity
+-----------|--------|------------|--------------
+Exponential| `^`    | 1          | Right
+|||
+Unary Plus | `+`    | 2          | None
+Unary Minus| `-`    | 2    | None
+Logical Not | `!` | 2 | None
+|||
+Integer Cast | `(INT)` | 3 | None
+Bool Cast | `(BOOL)` | 3 | None
+Float Cast | `(FLOAT)` | 3 | None
+|||
+Multiplication | `*` | 4 | Left
+Division | `/` | 4 | Left
+Modulo | `%` | 4 | Left
+|||
+Addition | `+` | 5 | Left
+Subtraction `-` | 5 | Left
+|||
+Less Than | `<` | 6 | Left
+Less or Equal | `<=` | 6 | Left
+Greater Than | `>` | 6 | Left
+Greater or Equal | `>=` | 6 | Left
+|||
+Equal to| `==` | 7 | Left
+Not Equal to | `!=` | 7 | Left 
+|||
+Logical And | `&&` | 8 | Left
+|||
+Logical Or `||` | 9 | Left
+
+
+
+
+
 
 
 
