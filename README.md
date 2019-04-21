@@ -82,30 +82,38 @@ Operator   | Symbol | Precidence | Associativity
 -----------|--------|------------|--------------
 Exponential| `^`    | 1          | Right
 |||
+|||
 Unary Plus | `+`    | 2          | None
 Unary Minus| `-`    | 2    | None
 Logical Not | `!` | 2 | None
+|||
 |||
 Integer Cast | `(INT)` | 3 | None
 Bool Cast | `(BOOL)` | 3 | None
 Float Cast | `(FLOAT)` | 3 | None
 |||
+|||
 Multiplication | `*` | 4 | Left
 Division | `/` | 4 | Left
 Modulo | `%` | 4 | Left
 |||
+|||
 Addition | `+` | 5 | Left
-Subtraction `-` | 5 | Left
+Subtraction | `-` | 5 | Left
+|||
 |||
 Less Than | `<` | 6 | Left
 Less or Equal | `<=` | 6 | Left
 Greater Than | `>` | 6 | Left
 Greater or Equal | `>=` | 6 | Left
 |||
+|||
 Equal to| `==` | 7 | Left
 Not Equal to | `!=` | 7 | Left 
 |||
+|||
 Logical And | `&&` | 8 | Left
+|||
 |||
 Logical Or | `\|\|`  | 9 | Left
 
